@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+<title>Jocundo</title>
+<style>
+  html,body{margin:0;padding:0;border:0;height:100%;background:#141018;overflow:hidden;touch-action:none;
+    font-family:'Fredoka',ui-rounded,system-ui,sans-serif}
+  #canvas{display:block;width:100%;height:100%}
+  #canvas:focus{outline:none}
+  #boot{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:14px;color:#FDF2EC;font-size:15px;font-weight:600;background:#141018}
+  #boot progress{width:56%;max-width:220px;height:6px;accent-color:#E85A50}
+  #boot.hide{display:none}
+  #err{max-width:80%;text-align:center;color:#F9C766;font-size:13px}
+  #share{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:12px;
+    justify-content:space-between;padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(0deg,rgba(20,16,24,.96),rgba(20,16,24,.82));
+    transform:translateY(110%);transition:transform .34s cubic-bezier(.22,1,.36,1)}
+  #share.show{transform:none}
+  #sscore{color:#FDF2EC;font-weight:600;font-size:15px}
+  #sscore b{color:var(--acc,#E85A50);font-size:19px}
+  #sbtn{border:0;cursor:pointer;font-family:inherit;font-weight:600;font-size:15px;color:#fff;
+    background:var(--acc,#E85A50);padding:11px 18px;border-radius:999px;white-space:nowrap;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.6)}
+  #sbtn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+  <canvas id="canvas">Your browser does not support the canvas tag.</canvas>
+  <div id="boot"><div id="lbl">loading…</div><progress id="prog"></progress><div id="err"></div></div>
+  <div id="share"><span id="sscore"></span><button id="sbtn" type="button">Share my score</button></div>
+  <script>
+    var P = new URLSearchParams(location.search);
+    var SLUG = (P.get('g') || '').replace(/[^a-z0-9-]/g, '');
+    var USLUG = (P.get('u') || SLUG).replace(/[^a-z0-9-]/g, '');
+    var NAME = (P.get('n') || 'this game').replace(/[<>&"]/g, '').slice(0, 40);
+    var ACC = '#' + ((P.get('a') || '').replace(/[^0-9a-fA-F]/g, '').slice(0, 6) || 'E85A50');
+    document.documentElement.style.setProperty('--acc', ACC);
+    var boot = document.getElementById('boot'), prog = document.getElementById('prog'),
+        err = document.getElementById('err'), shareBar = document.getElementById('share');
+    var lastScore = 0;
+    function fail(m){ boot.classList.remove('hide'); err.textContent = String(m && m.message || m); }
+
+    // ---- Godot -> page hooks (called via JavaScriptBridge from the framework) ----
+    window.jocundoOver = function (score, best) {
+      lastScore = score | 0;
+      document.getElementById('sscore').innerHTML = 'You scored <b>' + lastScore + '</b>';
+      shareBar.classList.add('show');
+    };
+    window.jocundoPlay = function () { shareBar.classList.remove('show'); };
+
+    // ---- share card ----
+    function loadImg(src){ return new Promise(function (res, rej) {
+      var i = new Image(); i.onload = function(){ res(i); }; i.onerror = rej; i.src = src; }); }
+    function rr(x, a, b, w, h, r){ x.beginPath();
+      x.moveTo(a+r,b); x.arcTo(a+w,b,a+w,b+h,r); x.arcTo(a+w,b+h,a,b+h,r);
+      x.arcTo(a,b+h,a,b,r); x.arcTo(a,b,a+w,b,r); x.closePath(); }
+    async function makeCard(score){
+      var W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H;
+      var x = c.getContext('2d');
+      x.fillStyle = ACC; x.fillRect(0, 0, W, H);
+      var g = x.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, 'rgba(255,255,255,.10)'); g.addColorStop(1, 'rgba(20,16,24,.34)');
+      x.fillStyle = g; x.fillRect(0, 0, W, H);
+      var font = "Fredoka" in (window.__f || {}) ? "Fredoka" : "system-ui";
+      var icon, wm;
+      try { icon = await loadImg('/assets/games/' + SLUG + '.png'); } catch (e) {}
+      try { wm = await loadImg('/assets/wordmark.png'); } catch (e) {}
+      if (wm) { var ww = 300, wh = ww * wm.height / wm.width; x.drawImage(wm, (W - ww) / 2, 96, ww, wh); }
+      if (icon) {
+        var s = 460, ix = (W - s) / 2, iy = 300;
+        x.save(); rr(x, ix, iy, s, s, 96); x.clip(); x.drawImage(icon, ix, iy, s, s); x.restore();
+        x.save(); rr(x, ix, iy, s, s, 96); x.lineWidth = 8; x.strokeStyle = 'rgba(255,255,255,.5)'; x.stroke(); x.restore();
+      }
+      x.textAlign = 'center'; x.fillStyle = '#fff';
+      x.font = '600 62px ' + font; x.fillText(NAME, W / 2, 900);
+      x.font = '700 190px ' + font; x.fillText(String(score), W / 2, 1110);
+      x.font = '600 50px ' + font; x.fillText('Can you beat me?', W / 2, 1185);
+      x.globalAlpha = .92; x.font = '600 40px ' + font;
+      x.fillText('jocundo.com/games/' + USLUG, W / 2, 1285); x.globalAlpha = 1;
+      return new Promise(function (res){ c.toBlob(res, 'image/png', .92); });
+    }
+    async function shareScore(){
+      var score = lastScore;
+      var url = 'https://jocundo.com/games/' + USLUG + '.html';
+      var text = 'I scored ' + score + ' on ' + NAME + ' — can you beat me?';
+      try {
+        var blob = await makeCard(score);
+        var file = new File([blob], 'jocundo-' + SLUG + '.png', { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], text: text.replace(' —', ','), url: url, title: NAME }); return;
+        }
+        if (navigator.share) { await navigator.share({ text: text.replace(' —', ','), url: url, title: NAME }); return; }
+        var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name;
+        document.body.appendChild(a); a.click(); a.remove();
+        try { await navigator.clipboard.writeText(text.replace(' —', ',') + ' ' + url); } catch (e) {}
+      } catch (e) { /* user cancelled */ }
+    }
+    document.getElementById('sbtn').addEventListener('click', shareScore);
+
+    // preload Fredoka so the card is on-brand
+    if (window.FontFace) {
+      var ff = new FontFace('Fredoka', "url(/assets/fonts/fredoka.woff2)");
+      ff.load().then(function (f){ document.fonts.add(f); window.__f = { Fredoka: 1 }; }).catch(function(){});
+    }
+  </script>
+  <script src="engine/godot.js"></script>
+  <script>
+    var GODOT_CONFIG = {
+      "args": [], "canvasResizePolicy": 2, "ensureCrossOriginIsolationHeaders": false,
+      "executable": "engine/godot", "experimentalVK": false, "focusCanvas": true, "gdextensionLibs": []
+    };
+    if (!SLUG) { fail("No game specified."); }
+    else if (typeof Engine === "undefined") { fail("Engine failed to load."); }
+    else {
+      var missing = Engine.getMissingFeatures({ threads: false });
+      if (missing.length) { fail("This browser is missing: " + missing.join(", ")); }
+      else {
+        new Engine(GODOT_CONFIG).startGame({
+          canvas: document.getElementById("canvas"),
+          mainPack: SLUG + ".pck",
+          onProgress: function (cur, total) {
+            if (cur > 0 && total > 0) { prog.value = cur; prog.max = total; }
+            else { prog.removeAttribute("value"); prog.removeAttribute("max"); }
+          }
+        }).then(function () { boot.classList.add("hide"); }, fail);
+      }
+    }
+  </script>
+</body>
+</html>
