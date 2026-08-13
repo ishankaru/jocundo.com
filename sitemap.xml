@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://jocundo.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://jocundo.com/games/caboose.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/bothhands.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/bothhands-duo.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/switchback.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/skoosh.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/shadowline.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/overbird.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/softfall.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/mothfall.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/tumbledown.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/tumbledown-duo.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/rimward.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/gobbin.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/kessler.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/quillball.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/barnswallow.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/games/knead.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
