@@ -1,3 +1,6 @@
 .playwright/
 .playwright-cli/
 .DS_Store
+# local-only build sources: pages ship the webp shots + og cards, not these
+assets/shots/*.png
+assets/mark.png
