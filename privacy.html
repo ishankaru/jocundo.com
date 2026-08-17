@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy | Jocundo</title>
+<meta name="description" content="How Jocundo handles data in its games.">
+<link rel="canonical" href="https://jocundo.com/privacy.html">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/hanken.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Fredoka';src:url('/assets/fonts/fredoka.woff2') format('woff2');font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:'Hanken';src:url('/assets/fonts/hanken.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap}
+:root{
+  --coral:#E85A50; --coral-deep:#C9463D; --gold:#F4A93A;
+  --ink:#241E33; --ink-soft:#5F576F; --ground:#FEF8F6; --surface:#FFFFFF;
+  --dark:#241E33; --on-dark:#FDF2EC; --on-dark-soft:#C7BCD6; --line:rgba(36,30,51,.12);
+  --display:'Fredoka',ui-rounded,system-ui,sans-serif;
+  --body:'Hanken','Hanken Grotesk',system-ui,sans-serif;
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme:dark){
+    --ink:#F3EEF7; --ink-soft:#B7AEC6; --ground:#181320; --surface:#211A2E; --line:rgba(255,255,255,.12);
+  }
+}
+:root[data-theme="dark"]{--ink:#F3EEF7; --ink-soft:#B7AEC6; --ground:#181320; --surface:#211A2E; --line:rgba(255,255,255,.12)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);line-height:1.65;
+  font-size:clamp(1rem,.96rem + .3vw,1.12rem);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--coral-deep);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{width:min(760px,92vw);margin-inline:auto;padding:clamp(2.5rem,6vh,5rem) 0 4rem}
+header.top{border-bottom:1px solid var(--line);background:var(--surface)}
+header.top .wrap{padding:.7rem 0;display:flex;align-items:center;justify-content:space-between}
+header.top img{height:26px;width:auto;display:block}
+header.top a.back{font-family:var(--display);font-weight:600;font-size:.95rem;color:var(--ink)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,1.5rem + 2vw,3rem);letter-spacing:-.02em;
+  line-height:1.05;margin-bottom:.5rem;text-wrap:balance}
+.updated{color:var(--ink-soft);font-size:.95rem;margin-bottom:2.2rem}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.3rem,1.1rem + .8vw,1.7rem);
+  letter-spacing:-.01em;margin:2.4rem 0 .7rem}
+p{margin:0 0 1rem;max-width:70ch}
+ul{margin:0 0 1rem 1.2rem;padding:0}
+li{margin:.35rem 0;max-width:68ch}
+strong{color:var(--ink);font-weight:700}
+.lead{font-size:1.1em}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.3rem;margin:1.2rem 0}
+footer{border-top:1px solid var(--line);color:var(--ink-soft);font-size:.9rem;font-family:var(--display)}
+footer .wrap{padding:1.6rem 0}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a href="/" aria-label="Jocundo home"><img src="/assets/wordmark.png" width="1000" height="222" alt="Jocundo"></a>
+    <a class="back" href="/">&#8592; Home</a>
+  </div>
+</header>
+<main class="wrap">
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated 17 August 2026</p>
+
+  <p class="lead">Jocundo is a one-person game studio operated by me, Ishan Karunaratne. This policy explains what data my games handle, and how. I have written it to be plain and short, because my games are simple and I collect almost nothing myself.</p>
+
+  <h2>The short version</h2>
+  <div class="box">
+    <p style="margin:0"><strong>My games do not ask you to sign in, and I do not collect your personal information myself.</strong> Your best score is saved only on your own device. Some of my games show ads from Google AdMob, and AdMob (not me) collects limited data to serve those ads, described below.</p>
+  </div>
+
+  <h2>What I collect myself</h2>
+  <p>Nothing that identifies you. My games have no accounts, no login, and no sign-up. Your high score and settings are stored locally on your device (and in your device's own backup, if you use one). I cannot see them, and they never leave your device to reach me.</p>
+
+  <h2>Advertising (Google AdMob)</h2>
+  <p>Some of my games display ads served through <strong>Google AdMob</strong>. To show ads and measure them, Google's advertising SDK may collect and process data such as a mobile advertising identifier, coarse (non-precise) location, device and app information, and your interactions with ads. This processing is carried out by Google, not by me, and is governed by Google's own policies:</p>
+  <ul>
+    <li><a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a></li>
+    <li><a href="https://policies.google.com/technologies/partner-sites" rel="noopener">How Google uses information from sites or apps that use its services</a></li>
+  </ul>
+  <p>On Apple devices running iOS 14.5 or later, you will be asked, through Apple's App Tracking Transparency prompt, whether to allow tracking for personalized ads. <strong>If you decline, the games still work and you still see ads, they are simply non-personalized.</strong> You can change this anytime in Settings &rarr; Privacy &amp; Security &rarr; Tracking. On Android you can reset or delete your advertising ID in your device settings.</p>
+
+  <h2>Children</h2>
+  <p>My games are intended for a general audience and are not directed at children under 13. I do not knowingly collect personal information from children. If you believe a child has provided personal information, contact me and I will address it.</p>
+
+  <h2>Analytics</h2>
+  <p>I do not run my own analytics or tracking in the games. If I add crash reporting or analytics in the future, I will update this policy first and disclose exactly what is collected.</p>
+
+  <h2>Your choices and rights</h2>
+  <p>Because I hold no personal data about you, there is nothing on my side to access, correct, or delete. For the ad data handled by Google, you can limit or reset it through your device's advertising settings (above) and through Google's controls. Depending on where you live (for example the EU/UK under GDPR, or California under the CCPA/CPRA), you may have rights over data that ad partners process; those requests are handled through Google's privacy controls linked above.</p>
+
+  <h2>Data security and retention</h2>
+  <p>Since your scores stay on your device, their security is handled by your device and your own backups. I retain no personal data, so there is nothing for me to store or delete.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, I will post the new version here and update the date at the top. Material changes that affect what is collected will be reflected before they take effect.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this policy, or about a specific Jocundo game, can go to <a href="mailto:hello@jocundo.com?subject=Privacy%20question">hello@jocundo.com</a>.</p>
+</main>
+<footer>
+  <div class="wrap">&#169; 2026 Jocundo &middot; Ishan Karunaratne &middot; <a href="/">jocundo.com</a></div>
+</footer>
+</body>
+</html>
