@@ -18,4 +18,8 @@
   <url><loc>https://jocundo.com/games/quillball.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jocundo.com/games/barnswallow.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jocundo.com/games/knead.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jocundo.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://jocundo.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://jocundo.com/dmca.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://jocundo.com/support.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

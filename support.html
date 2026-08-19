@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Support | Jocundo</title>
+<meta name="description" content="Help and contact for Jocundo games: crashes, scores, ads, refunds, press.">
+<link rel="canonical" href="https://jocundo.com/support.html">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/fredoka.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/hanken.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Fredoka';src:url('/assets/fonts/fredoka.woff2') format('woff2');font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:'Hanken';src:url('/assets/fonts/hanken.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap}
+:root{
+  --coral:#E85A50; --coral-deep:#C9463D; --gold:#F4A93A;
+  --ink:#241E33; --ink-soft:#5F576F; --ground:#FEF8F6; --surface:#FFFFFF;
+  --dark:#241E33; --on-dark:#FDF2EC; --on-dark-soft:#C7BCD6; --line:rgba(36,30,51,.12);
+  --display:'Fredoka',ui-rounded,system-ui,sans-serif;
+  --body:'Hanken','Hanken Grotesk',system-ui,sans-serif;
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme:dark){
+    --ink:#F3EEF7; --ink-soft:#B7AEC6; --ground:#181320; --surface:#211A2E; --line:rgba(255,255,255,.12);
+  }
+}
+:root[data-theme="dark"]{--ink:#F3EEF7; --ink-soft:#B7AEC6; --ground:#181320; --surface:#211A2E; --line:rgba(255,255,255,.12)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);line-height:1.65;
+  font-size:clamp(1rem,.96rem + .3vw,1.12rem);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--coral-deep);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{width:min(760px,92vw);margin-inline:auto;padding:clamp(2.5rem,6vh,5rem) 0 4rem}
+header.top{border-bottom:1px solid var(--line);background:var(--surface)}
+header.top .wrap{padding:.7rem 0;display:flex;align-items:center;justify-content:space-between}
+header.top img{height:26px;width:auto;display:block}
+header.top a.back{font-family:var(--display);font-weight:600;font-size:.95rem;color:var(--ink)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,1.5rem + 2vw,3rem);letter-spacing:-.02em;
+  line-height:1.05;margin-bottom:.5rem;text-wrap:balance}
+.updated{color:var(--ink-soft);font-size:.95rem;margin-bottom:2.2rem}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.3rem,1.1rem + .8vw,1.7rem);
+  letter-spacing:-.01em;margin:2.4rem 0 .7rem}
+p{margin:0 0 1rem;max-width:70ch}
+ul{margin:0 0 1rem 1.2rem;padding:0}
+li{margin:.35rem 0;max-width:68ch}
+strong{color:var(--ink);font-weight:700}
+.lead{font-size:1.1em}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.3rem;margin:1.2rem 0}
+footer{border-top:1px solid var(--line);color:var(--ink-soft);font-size:.9rem;font-family:var(--display)}
+footer .wrap{padding:1.6rem 0}
+footer nav.legal{margin-bottom:.6rem}
+footer nav.legal a{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a href="/" aria-label="Jocundo home"><img src="/assets/wordmark.png" width="1000" height="222" alt="Jocundo"></a>
+    <a class="back" href="/">&#8592; Home</a>
+  </div>
+</header>
+<main class="wrap">
+  <h1>Support</h1>
+  <p class="updated">Last updated 18 August 2026</p>
+
+  <p class="lead">Jocundo is a one-person studio, so when you write in, you are writing to the person who made the game. Here are answers to the things people ask most, and how to reach me for everything else.</p>
+
+  <h2>Contact</h2>
+  <div class="box">
+    <p style="margin:0 0 .4rem">Email: <a href="mailto:hello@jocundo.com?subject=Support%20request">hello@jocundo.com</a></p>
+    <p style="margin:0">Please tell me which game, what device and OS version you are on, and what happened. A screenshot or a short screen recording helps a lot. I usually reply within a couple of days.</p>
+  </div>
+
+  <h2>Common questions</h2>
+
+  <h2 style="font-size:1.15em;margin-top:1.6rem">The game crashes or will not open</h2>
+  <p>First, make sure the game is updated to the latest version from the store and that your device meets the minimum OS version shown on the store page (iOS 15 or later; Android 7.0 or later). If it still fails, force-quit the game and open it again, or restart the device. If that does not fix it, email me the game name, device model, OS version, and what you see, and I will look into it.</p>
+
+  <h2 style="font-size:1.15em;margin-top:1.6rem">How do I reset my best score?</h2>
+  <p>Best scores are stored only on your device. Deleting and reinstalling the game clears them. There is no account, so nothing is stored on my side to reset.</p>
+
+  <h2 style="font-size:1.15em;margin-top:1.6rem">Does the game need an internet connection?</h2>
+  <p>No. All my games play fully offline. Games that show ads will simply skip ads when there is no connection.</p>
+
+  <h2 style="font-size:1.15em;margin-top:1.6rem">Do you have accounts, cloud saves, or online leaderboards?</h2>
+  <p>Not at the moment. Every game is deliberately simple: no sign-up, no login, nothing to sync. If that changes, I will update the <a href="/privacy.html">Privacy Policy</a> before it ships.</p>
+
+  <h2 style="font-size:1.15em;margin-top:1.6rem">Ads</h2>
+  <p>Some games show ads so that they can stay free. Ads are served by Google AdMob; I do not choose individual ads. If you see an ad that is offensive, deceptive, or inappropriate, please send me a screenshot and roughly when you saw it, and I will report it. On iOS you can turn off personalized ads under Settings &rarr; Privacy &amp; Security &rarr; Tracking; on Android, in your Google settings under Ads.</p>
+
+  <h2 style="font-size:1.15em;margin-top:1.6rem">Refunds</h2>
+  <p>My games are free. If a game ever offers an in-app purchase, that purchase is processed by Apple or Google, and refunds are handled by them under their policies: <a href="https://support.apple.com/HT204084" rel="noopener">Apple refund requests</a> and <a href="https://support.google.com/googleplay/answer/2479637" rel="noopener">Google Play refunds</a>. I cannot issue store refunds myself.</p>
+
+  <h2 style="font-size:1.15em;margin-top:1.6rem">Accessibility</h2>
+  <p>Every game is one- or two-touch and playable with one hand. If something about a game is hard for you to see, hear, or control, tell me. Concrete feedback from players is how I decide what to improve.</p>
+
+  <h2 style="font-size:1.15em;margin-top:1.6rem">Feature ideas and feedback</h2>
+  <p>I read everything. If you have an idea, a complaint, or just want to say which game you like best, send it along.</p>
+
+  <h2>Videos, streams, and press</h2>
+  <p>You are welcome to record, stream, and monetize videos of my games on platforms like YouTube, TikTok, and Twitch, and to use screenshots and short clips in reviews and articles. Please credit Jocundo and, where practical, link to <a href="/">jocundo.com</a> or the store page. Please do not redistribute the game files themselves, sell my art or music separately, or use them to promote unrelated products. For press kits, interviews, or anything else, email <a href="mailto:hello@jocundo.com?subject=Press">hello@jocundo.com</a>.</p>
+
+  <h2>Report a problem with content</h2>
+  <p>To report a copyright or trademark concern, see the <a href="/dmca.html">Copyright / DMCA policy</a>. For privacy questions, see the <a href="/privacy.html">Privacy Policy</a>. For everything about your rights and mine, see the <a href="/terms.html">Terms of Use</a>.</p>
+</main>
+<footer>
+  <div class="wrap">
+    <nav class="legal" aria-label="Legal and support">
+      <a href="/privacy.html">Privacy</a> &middot;
+      <a href="/terms.html">Terms</a> &middot;
+      <a href="/dmca.html">Copyright / DMCA</a> &middot;
+      <a href="/support.html">Support</a>
+    </nav>
+    &#169; 2026 Jocundo &middot; Ishan Karunaratne &middot; <a href="/">jocundo.com</a>
+  </div>
+</footer>
+</body>
+</html>

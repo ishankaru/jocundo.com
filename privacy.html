@@ -52,6 +52,8 @@ strong{color:var(--ink);font-weight:700}
 .box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.3rem;margin:1.2rem 0}
 footer{border-top:1px solid var(--line);color:var(--ink-soft);font-size:.9rem;font-family:var(--display)}
 footer .wrap{padding:1.6rem 0}
+footer nav.legal{margin-bottom:.6rem}
+footer nav.legal a{color:var(--ink);font-weight:600}
 </style>
 </head>
 <body>
@@ -102,7 +104,15 @@ footer .wrap{padding:1.6rem 0}
   <p>Questions about this policy, or about a specific Jocundo game, can go to <a href="mailto:hello@jocundo.com?subject=Privacy%20question">hello@jocundo.com</a>.</p>
 </main>
 <footer>
-  <div class="wrap">&#169; 2026 Jocundo &middot; Ishan Karunaratne &middot; <a href="/">jocundo.com</a></div>
+  <div class="wrap">
+    <nav class="legal" aria-label="Legal and support">
+      <a href="/privacy.html">Privacy</a> &middot;
+      <a href="/terms.html">Terms</a> &middot;
+      <a href="/dmca.html">Copyright / DMCA</a> &middot;
+      <a href="/support.html">Support</a>
+    </nav>
+    &#169; 2026 Jocundo &middot; Ishan Karunaratne &middot; <a href="/">jocundo.com</a>
+  </div>
 </footer>
 </body>
 </html>
