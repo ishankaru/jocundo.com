@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local `npm run dev`. Never commit .dev.vars.
+ADMIN_KEY=change-me
+RESULTS_PUBLIC=false

@@ -1,0 +1,29 @@
+name = "kick-or-treat-poll"
+main = "src/worker.js"
+compatibility_date = "2026-09-01"
+
+# Static files (the vote page + results page)
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+# Cloudflare D1 database. Create it with:
+#   npx wrangler d1 create kick-or-treat-poll
+# then paste the database_id it prints below.
+[[d1_databases]]
+binding = "DB"
+database_name = "kick-or-treat-poll"
+database_id = "REPLACE_WITH_DATABASE_ID"
+
+# Custom domain. Make sure teachearl.com is a zone in the same Cloudflare account.
+[[routes]]
+pattern = "u10.teachearl.com"
+custom_domain = true
+
+[vars]
+# Default visibility of results before the organizer toggles it on the /results page.
+# "false" keeps results hidden from voters; only the admin key reveals them.
+RESULTS_PUBLIC = "false"
+# Set the admin key as a secret, never here:
+#   npx wrangler secret put ADMIN_KEY

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kick or Treat Theme Vote</title>
+<meta name="description" content="Coaches: vote for your top three team themes for the U10 Kick or Treat Soccer Tournament in Medford, New Jersey.">
+<meta name="theme-color" content="#1a0b2e">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎃</text></svg>">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <div class="hero-emoji" aria-hidden="true">⚽️🎃</div>
+    <p class="kicker">U10 · Medford, New Jersey</p>
+    <h1>Kick or Treat<br>Tournament Theme Vote</h1>
+    <p class="lead">Coaches, pick your <strong>top three</strong> team theme options. We'll narrow it down from your votes, then the players choose the final theme. 🎃⚽️</p>
+    <p class="count" id="count" hidden></p>
+  </header>
+
+  <section class="card" id="vote-card">
+    <div class="notice saved" id="saved" hidden>
+      <span aria-hidden="true">✅</span>
+      <div><strong>Your picks are saved.</strong> Change them any time and press save again.</div>
+    </div>
+
+    <form id="form" novalidate>
+      <div class="fields">
+        <label>Your name
+          <input id="name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="Coach Sam" required>
+        </label>
+        <label>Team
+          <input id="team" name="team" type="text" maxlength="60" autocomplete="off" placeholder="Orange Crush" required>
+        </label>
+      </div>
+
+      <div class="picks-head">
+        <h2>Choose 3 themes</h2>
+        <span class="picked" id="picked">0 of 3 picked</span>
+      </div>
+      <div class="options" id="options" role="group" aria-label="Theme options"></div>
+
+      <p class="error" id="error" role="alert" hidden></p>
+      <button class="btn" id="submit" type="submit" disabled>Save my 3 picks 🗳️</button>
+    </form>
+  </section>
+
+  <section class="card results-note" id="results-note" hidden>
+    <h2>Results</h2>
+    <p id="results-text">Results are hidden until the coaches' vote closes. The organizer will share them once the players' vote is set up.</p>
+    <div id="results"></div>
+  </section>
+
+  <footer class="foot">
+    <p>Questions? Ask your tournament organizer. · <a href="/results">Organizer login</a></p>
+  </footer>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const state = { options: [], picks: 3, chosen: [] };
+
+async function getJSON(url, opts) {
+  const r = await fetch(url, { credentials: "same-origin", ...opts });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || "Request failed.");
+  return data;
+}
+
+function renderOptions() {
+  const box = $("#options");
+  box.innerHTML = "";
+  for (const o of state.options) {
+    const idx = state.chosen.indexOf(o.id);
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt" + (idx >= 0 ? " on" : "");
+    b.dataset.id = o.id;
+    b.setAttribute("aria-pressed", idx >= 0 ? "true" : "false");
+    b.innerHTML = `<span class="opt-emoji" aria-hidden="true">${o.emoji}</span><span class="opt-label">${o.label}</span><span class="badge">${idx >= 0 ? idx + 1 : ""}</span>`;
+    b.addEventListener("click", () => toggle(o.id));
+    box.appendChild(b);
+  }
+  $("#picked").textContent = `${state.chosen.length} of ${state.picks} picked`;
+  updateSubmit();
+}
+
+function toggle(id) {
+  const i = state.chosen.indexOf(id);
+  if (i >= 0) state.chosen.splice(i, 1);
+  else if (state.chosen.length < state.picks) state.chosen.push(id);
+  else { showError(`You can only pick ${state.picks}. Tap one of your picks to remove it first.`); return; }
+  showError("");
+  renderOptions();
+}
+
+function updateSubmit() {
+  const ok = state.chosen.length === state.picks && $("#name").value.trim() && $("#team").value.trim();
+  $("#submit").disabled = !ok;
+}
+function showError(msg) {
+  const e = $("#error");
+  e.textContent = msg; e.hidden = !msg;
+}
+
+function renderResults(data) {
+  const note = $("#results-note");
+  note.hidden = false;
+  if (data.hidden) return;
+  $("#results-text").textContent = `${data.totalVotes} coach${data.totalVotes === 1 ? "" : "es"} voted. Here's how the themes stacked up:`;
+  const max = Math.max(1, ...data.results.map(r => r.votes));
+  $("#results").innerHTML = data.results.map((r, i) => `
+    <div class="bar-row ${i < 3 ? "top" : ""}">
+      <div class="bar-label"><span aria-hidden="true">${r.emoji}</span> ${r.label}</div>
+      <div class="bar"><div class="bar-fill" style="width:${(r.votes / max) * 100}%"></div></div>
+      <div class="bar-num">${r.votes}</div>
+    </div>`).join("");
+}
+
+async function load() {
+  const [opts, me] = await Promise.all([getJSON("/api/options"), getJSON("/api/me")]);
+  state.options = opts.options; state.picks = opts.picks;
+  if (me.vote) {
+    $("#name").value = me.vote.name; $("#team").value = me.vote.team;
+    state.chosen = me.vote.choices.slice();
+    $("#saved").hidden = false;
+    $("#submit").textContent = "Update my picks 🗳️";
+  }
+  if (me.totalVotes > 0) {
+    $("#count").textContent = `${me.totalVotes} coach${me.totalVotes === 1 ? " has" : "es have"} voted so far`;
+    $("#count").hidden = false;
+  }
+  renderOptions();
+  if (me.resultsPublic) renderResults(await getJSON("/api/results"));
+  else if (me.vote) renderResults({ hidden: true });
+}
+
+$("#form").addEventListener("submit", async e => {
+  e.preventDefault();
+  showError("");
+  const btn = $("#submit"); btn.disabled = true; btn.textContent = "Saving…";
+  try {
+    const data = await getJSON("/api/vote", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: $("#name").value, team: $("#team").value, choices: state.chosen }),
+    });
+    $("#saved").hidden = false;
+    $("#saved").scrollIntoView({ behavior: "smooth", block: "center" });
+    btn.textContent = "Update my picks 🗳️";
+    const me = await getJSON("/api/me");
+    $("#count").textContent = `${me.totalVotes} coach${me.totalVotes === 1 ? " has" : "es have"} voted so far`;
+    $("#count").hidden = false;
+    if (me.resultsPublic) renderResults(await getJSON("/api/results")); else renderResults({ hidden: true });
+  } catch (err) {
+    showError(err.message);
+    btn.textContent = "Save my 3 picks 🗳️";
+  } finally { updateSubmit(); }
+});
+["#name", "#team"].forEach(s => $(s).addEventListener("input", updateSubmit));
+load().catch(err => showError("Couldn't load the poll. " + err.message));
+</script>
+</body>
+</html>

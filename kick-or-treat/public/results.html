@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kick or Treat Results</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎃</text></svg>">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <div class="hero-emoji" aria-hidden="true">🎃📊</div>
+    <p class="kicker">Organizer view</p>
+    <h1>Theme Vote Results</h1>
+    <p class="lead"><a href="/" style="color:var(--orange2)">← Back to the vote</a></p>
+  </header>
+
+  <section class="card" id="login">
+    <h2>Organizer login</h2>
+    <p class="small">Results are hidden from coaches. Enter the admin key to see them.</p>
+    <form id="login-form">
+      <label>Admin key <input id="key" type="password" autocomplete="current-password" required></label>
+      <p class="error" id="login-error" hidden></p>
+      <button class="btn" type="submit">Show results</button>
+    </form>
+  </section>
+
+  <section class="card" id="panel" hidden>
+    <div class="row" style="justify-content:space-between">
+      <h2 id="total"></h2>
+      <div class="row">
+        <span id="vis" class="pill off">Hidden from coaches</span>
+        <button class="btn secondary" id="toggle" type="button">Make results public</button>
+        <button class="btn secondary" id="logout" type="button">Log out</button>
+      </div>
+    </div>
+    <p class="small" id="vis-help"></p>
+    <div id="results" style="margin-top:14px"></div>
+  </section>
+
+  <section class="card" id="voters-card" hidden>
+    <h2>Who voted</h2>
+    <p class="small">Times are shown in Eastern time. Remove a vote if someone needs a do-over or voted twice under different names.</p>
+    <div style="overflow-x:auto"><table id="voters"></table></div>
+  </section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const KEY = "kot_admin_key";
+let adminKey = localStorage.getItem(KEY) || "";
+let optionsById = {};
+
+async function api(url, opts = {}) {
+  const headers = { ...(opts.headers || {}) };
+  if (adminKey) headers.Authorization = "Bearer " + adminKey;
+  const r = await fetch(url, { credentials: "same-origin", ...opts, headers });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || "Request failed.");
+  return data;
+}
+
+function fmt(iso) {
+  return new Date(iso.replace(" ", "T") + "Z").toLocaleString("en-US", {
+    timeZone: "America/New_York", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+}
+
+async function refresh() {
+  const data = await api("/api/results");
+  if (data.hidden || !data.voters) throw new Error("Wrong admin key.");
+  $("#login").hidden = true; $("#panel").hidden = false; $("#voters-card").hidden = false;
+  $("#total").textContent = `${data.totalVotes} coach${data.totalVotes === 1 ? "" : "es"} voted`;
+  $("#vis").className = "pill " + (data.resultsPublic ? "on" : "off");
+  $("#vis").textContent = data.resultsPublic ? "Public to coaches" : "Hidden from coaches";
+  $("#toggle").textContent = data.resultsPublic ? "Hide results again" : "Make results public";
+  $("#toggle").dataset.next = data.resultsPublic ? "false" : "true";
+  $("#vis-help").textContent = data.resultsPublic
+    ? "Anyone opening the vote page can now see the tallies."
+    : "Only you can see the tallies. Coaches just see how many people have voted.";
+
+  const max = Math.max(1, ...data.results.map(r => r.votes));
+  $("#results").innerHTML = data.results.map((r, i) => `
+    <div class="bar-row ${i < 3 ? "top" : ""}">
+      <div class="bar-label"><span aria-hidden="true">${r.emoji}</span> ${r.label} <span class="small">${r.pct}%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:${(r.votes / max) * 100}%"></div></div>
+      <div class="bar-num">${r.votes}</div>
+    </div>`).join("");
+
+  for (const r of data.results) optionsById[r.id] = r;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  $("#voters").innerHTML = `<tr><th>Coach</th><th>Team</th><th>Picks</th><th>Updated</th><th></th></tr>` +
+    (data.voters.length ? data.voters.map(v => `<tr>
+      <td>${esc(v.name)}</td><td>${esc(v.team)}</td>
+      <td>${v.choices.map(id => optionsById[id] ? `${optionsById[id].emoji} ${esc(optionsById[id].label)}` : esc(id)).join("<br>")}</td>
+      <td class="small">${fmt(v.updatedAt)}</td>
+      <td><button class="x" data-id="${esc(v.id)}" data-name="${esc(v.name)}" title="Remove this vote">✕</button></td>
+    </tr>`).join("") : `<tr><td colspan="5" class="small">No votes yet.</td></tr>`);
+}
+
+$("#login-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  adminKey = $("#key").value.trim();
+  try {
+    await refresh();
+    localStorage.setItem(KEY, adminKey);
+  } catch (err) {
+    adminKey = ""; localStorage.removeItem(KEY);
+    $("#login-error").textContent = err.message; $("#login-error").hidden = false;
+  }
+});
+$("#logout").addEventListener("click", () => { adminKey = ""; localStorage.removeItem(KEY); location.reload(); });
+$("#toggle").addEventListener("click", async e => {
+  const next = e.currentTarget.dataset.next === "true";
+  if (next && !confirm("Make the results visible to every coach on the vote page?")) return;
+  await api("/api/admin/settings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ resultsPublic: next }) });
+  await refresh();
+});
+$("#voters").addEventListener("click", async e => {
+  const b = e.target.closest("button.x"); if (!b) return;
+  if (!confirm(`Remove ${b.dataset.name}'s vote? They'll be able to vote again.`)) return;
+  await api("/api/admin/votes/" + encodeURIComponent(b.dataset.id), { method: "DELETE" });
+  await refresh();
+});
+
+if (adminKey) refresh().catch(() => { adminKey = ""; localStorage.removeItem(KEY); });
+</script>
+</body>
+</html>
